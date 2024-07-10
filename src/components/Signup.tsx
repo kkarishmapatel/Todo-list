@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../app/store";
+import React, { useState } from "react";
 import axios from "axios";
-import { signup } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const Signup: React.FC = () => {
@@ -10,43 +7,26 @@ const Signup: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-  const auth = useSelector((state: RootState) => state.auth);
 
-  // const handleSignup = () => {
-  //   dispatch(signup({ name, email, password }));
-  //   navigate("/login");
-  // };
-
-  // const handleSignup = async () => {
-  //   try {
-  //     await axios.post("http://localhost:5000/auth/signup", {
-  //       name,
-  //       email,
-  //       password,
-  //     });
-  //     navigate("/login");
-  //   } catch (error) {
-  //     console.error("Error signing up:", error);
-  //   }
-  // };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(signup({ name, email, password }));
-  };
+    try {
+      const response = await axios.post("http://localhost:5000/auth/signup", {
+        name,
+        email,
+        password,
+      });
 
-  useEffect(() => {
-    if (auth.status === "succeeded") {
-      navigate("/");
+      console.log("response - ", response);
+      if (response.statusText == "Created") navigate("/login");
+    } catch (error) {
+      console.error("Error signing up:", error);
     }
-  }, [auth.status, navigate]);
+  };
 
   return (
     <div>
       <h2>Signup</h2>
-      {auth.status === "loading" && <p>Loading...</p>}
-      {auth.status === "failed" && <p>Error: {auth.error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -68,7 +48,6 @@ const Signup: React.FC = () => {
         />
         <button type="submit">Signup</button>
       </form>
-      {/* <button onClick={handleSignup}>Signup</button> */}
     </div>
   );
 };

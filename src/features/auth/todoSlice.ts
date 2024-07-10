@@ -52,12 +52,7 @@ export const deleteTodo = createAsyncThunk(
 const todoSlice = createSlice({
   name: "todos",
   initialState,
-  // reducers: {},
-  reducers: {
-    setSearchTerm: (state, action: PayloadAction<string>) => {
-      state.searchTerm = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchTodos.fulfilled, (state, action: PayloadAction<Todo[]>) => {
@@ -80,5 +75,4 @@ const todoSlice = createSlice({
   },
 });
 
-export const { setSearchTerm } = todoSlice.actions;
 export default todoSlice.reducer;

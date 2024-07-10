@@ -1,32 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-// import { signup } from "../features/auth/authSlice";
-// import { useNavigate } from "react-router-dom";
-
 import { RootState, AppDispatch } from "../app/store";
 import {
   fetchTodos,
   addTodo,
   updateTodo,
   deleteTodo,
-  setSearchTerm,
   Todo,
 } from "../features/auth/todoSlice";
-// import { fetchTodos, addTodo } from "../features/auth/todoSlice";
 
 const TodoList: React.FC = () => {
   const [title, setTitle] = useState("");
-  // const [titleSearch, setTitleSearch] = useState("");
+  const [titleSearch, setTitleSearch] = useState("");
   const [isEditing, setIsEditing] = useState<number | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const dispatch = useDispatch<AppDispatch>();
 
   const user = useSelector((state: RootState) => state.auth.user);
   const todos = useSelector((state: RootState) => state.todos.todos);
-  const searchTerm = useSelector((state: RootState) => state.todos.searchTerm);
-
-  //   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -60,22 +51,13 @@ const TodoList: React.FC = () => {
     setEditTitle(todo.title);
   };
 
-  const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchTerm(e.target.value));
+  const handleSearchTodo = () => {
+    const result = todos.filter((item) => item.title === titleSearch);
+    console.log("result ", result);
   };
 
-  // const handleSearchTodo = () => {
-  //   const result = todos.filter((item) => item.title === titleSearch);
-  //   console.log("result ", result);
-
-  //   // titleSearch;
-  // };
-
-  // const filteredTodos = todos.filter((todo) =>
-  // /   todo.title.toLowerCase().includes(titleSearch.toLowerCase())
-  // );
   const filteredTodos = todos.filter((todo) =>
-    todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+    todo.title.toLowerCase().includes(titleSearch.toLowerCase())
   );
 
   return (
@@ -91,20 +73,14 @@ const TodoList: React.FC = () => {
         <button onClick={handleAddTodo}>Add</button>
       </div>
 
-      {/* <input
+      <input
         type="text"
         value={titleSearch}
         onChange={(e) => setTitleSearch(e.target.value)}
         placeholder="search todo item"
-      /> */}
-      {/* <button onClick={handleSearchTodo}>search</button> */}
-
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearchTermChange}
-        placeholder="Search todos"
       />
+      <button onClick={handleSearchTodo}>search</button>
+
       <ul>
         {filteredTodos.map((todo) => (
           <li key={todo.id}>

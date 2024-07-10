@@ -10,10 +10,9 @@ const Home: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   console.log("home user ", user);
 
-  // const isAuthenticated = useSelector(
-  //   (state: RootState) => state.auth.isAuthenticated
-  // );
-  const isAuthenticated = Boolean(user);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   console.log("isAuthenticated - ", isAuthenticated);
