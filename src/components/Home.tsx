@@ -10,23 +10,24 @@ const Home: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   console.log("home user ", user);
 
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  // const isAuthenticated = useSelector(
+  //   (state: RootState) => state.auth.isAuthenticated
+  // );
+  const isAuthenticated = Boolean(user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   console.log("isAuthenticated - ", isAuthenticated);
-  if (!isAuthenticated) {
-    navigate("/login");
-    return null;
-  }
+  // if (!isAuthenticated) {
+  //   navigate("/login");
+  //   return null;
+  // }
   return (
     <div>
       <h2>Home</h2>
-      {user ? (
+      {isAuthenticated ? (
         <>
           <div>
-            <p>Welcome, {user.name}!</p>
+            <p>Welcome, {user?.name}!</p>
             <div>Add your to do from below.</div>
             <br />
             <button onClick={() => dispatch(logout())}>Logout</button>
@@ -36,7 +37,7 @@ const Home: React.FC = () => {
           </div>
         </>
       ) : (
-        <p>Please login or singup.</p>
+        <p>Please log in to access your account.</p>
       )}
     </div>
   );
