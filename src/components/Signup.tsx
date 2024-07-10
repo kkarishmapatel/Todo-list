@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../app/store";
 import axios from "axios";
 import { signup } from "../features/auth/authSlice";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Signup: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
 
@@ -35,6 +35,12 @@ const Signup: React.FC = () => {
     e.preventDefault();
     dispatch(signup({ name, email, password }));
   };
+
+  useEffect(() => {
+    if (auth.status === "succeeded") {
+      navigate("/");
+    }
+  }, [auth.status, navigate]);
 
   return (
     <div>

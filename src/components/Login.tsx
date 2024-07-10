@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -42,7 +42,11 @@ const Login: React.FC = () => {
   // if (isAuthenticated) {
   //   navigate("/");
   // }
-
+  useEffect(() => {
+    if (auth.status === "succeeded") {
+      navigate("/");
+    }
+  }, [auth.status, navigate]);
   return (
     <div className="wraplogin">
       <div>
